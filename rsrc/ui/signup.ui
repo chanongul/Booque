@@ -165,7 +165,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -276,7 +276,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -398,7 +398,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -470,7 +470,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -558,7 +558,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -604,7 +604,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -704,9 +704,12 @@
           </property>
           <property name="font">
            <font>
-            <family>Helvetica Neue</family>
-            <pointsize>9</pointsize>
+            <family>Fixedsys</family>
+            <pointsize>11</pointsize>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -717,7 +720,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="ext_btn">
+         <widget class="QPushButton" name="close_btn">
           <property name="minimumSize">
            <size>
             <width>16</width>
@@ -732,11 +735,14 @@
           </property>
           <property name="font">
            <font>
-            <family>Helvetica Neue LT</family>
-            <pointsize>6</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
+            <family>Helvetica Neue LT Extended</family>
+            <pointsize>7</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Close&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -897,7 +903,7 @@
  </widget>
  <tabstops>
   <tabstop>min_btn</tabstop>
-  <tabstop>ext_btn</tabstop>
+  <tabstop>close_btn</tabstop>
   <tabstop>f_name</tabstop>
   <tabstop>l_name</tabstop>
   <tabstop>username</tabstop>

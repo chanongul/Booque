@@ -18,12 +18,12 @@ default = """
 	color: black
 }
 
-#ext_btn {
+#close_btn {
 	background-color: rgb(255, 0, 0);
 	color: rgb(255, 0, 0);
 	border-radius: 8px;
 }
-#ext_btn:hover {
+#close_btn:hover {
 	color: black
 }
 
@@ -78,7 +78,7 @@ default = """
 }
 
 #create_btn {
-	text-align: right;
+	tclose-align: right;
 }
 #create_btn:hover {
 	font-weight: bold;
@@ -88,7 +88,6 @@ default = """
 #login_btn {
 	background-color: rgb(255, 255, 255);
 	border-radius: 20px;
-	transition-duration: 0.4s;
 }
 #login_btn:hover {
 	background-color: rgb(255, 190, 111);
@@ -98,7 +97,6 @@ default = """
 #continue_btn {
 	background-color: rgb(255, 255, 255);
 	border-radius: 12px;
-	transition-duration: 0.4s;
 }
 #continue_btn:hover {
 	background-color: rgb(255, 190, 111);
@@ -108,7 +106,6 @@ default = """
 #unrmb_btn {
 	background-color: rgb(255, 255, 255);
 	border-radius: 12px;
-	transition-duration: 0.4s;
 }
 #unrmb_btn:hover {
 	background-color: rgb(255, 190, 111);
@@ -116,7 +113,7 @@ default = """
 }
 
 #back_btn {
-	text-align: right;
+	tclose-align: right;
 }
 #back_btn:hover {
 	font-weight: bold;
@@ -126,7 +123,6 @@ default = """
 #signup_btn {
 	background-color: rgb(255, 255, 255);
 	border-radius: 20px;
-	transition-duration: 0.4s;
 }
 #signup_btn:hover {
 	background-color: rgb(255, 190, 111);

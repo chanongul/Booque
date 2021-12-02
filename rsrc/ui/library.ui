@@ -37,19 +37,19 @@
      <property name="minimumSize">
       <size>
        <width>600</width>
-       <height>150</height>
+       <height>100</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>600</width>
-       <height>150</height>
+       <height>100</height>
       </size>
      </property>
      <property name="font">
       <font>
        <family>Helvetica Neue LT Black Ext</family>
-       <pointsize>72</pointsize>
+       <pointsize>48</pointsize>
        <weight>75</weight>
        <italic>true</italic>
        <bold>true</bold>

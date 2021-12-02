@@ -22,10 +22,6 @@ class Home(QtWidgets.QWidget):
             "Welcome " + self.f_name + "\nto BOOQUE,\nthe best book review app!"
         )
         self.quote_label.setText(
-            "“With great degree,\ncomes (a lot of)\ngreat projects”\n- a suffering student"
+            "“The world breaks everyone,\nand afterward,\nmany are strong\nat the broken places.”"
         )
-        self.chart_btn.clicked.connect(self.goToChart)
-
-    def goToChart(self):
-        authen.mainApp.setWindowTitle("Booque - Charts")
-        authen.mainApp.app_panel.setCurrentIndex(7)
+        self.credit_label.setText("- Ernest Hemingway, A Farewell to Arms")

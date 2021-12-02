@@ -168,7 +168,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
        </font>
       </property>
@@ -334,7 +334,7 @@
       </property>
       <property name="font">
        <font>
-        <family>Helvetica Neue</family>
+        <family>Helvetica Neue LT</family>
         <pointsize>10</pointsize>
         <italic>false</italic>
        </font>
@@ -429,8 +429,9 @@
       </property>
       <property name="font">
        <font>
-        <family>Product Sans</family>
-        <pointsize>36</pointsize>
+        <family>Helvetica Neue LT Medium Ext</family>
+        <pointsize>28</pointsize>
+        <italic>true</italic>
        </font>
       </property>
       <property name="text">
@@ -465,6 +466,9 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Continue&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -494,6 +498,9 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Back to log in&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -529,21 +536,24 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>170</width>
+          <width>130</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>170</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="font">
          <font>
           <family>Product Sans</family>
-          <pointsize>11</pointsize>
+          <pointsize>10</pointsize>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep me sign in&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -576,13 +586,13 @@
        <widget class="QPushButton" name="create_btn">
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>75</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>75</width>
           <height>16777215</height>
          </size>
         </property>
@@ -592,6 +602,9 @@
           <pointsize>10</pointsize>
           <underline>true</underline>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create an account?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -651,11 +664,14 @@
           </property>
           <property name="font">
            <font>
-            <family>Helvetica Neue LT</family>
-            <pointsize>9</pointsize>
+            <family>Fixedsys</family>
+            <pointsize>11</pointsize>
             <weight>50</weight>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -666,7 +682,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="ext_btn">
+         <widget class="QPushButton" name="close_btn">
           <property name="minimumSize">
            <size>
             <width>16</width>
@@ -681,11 +697,14 @@
           </property>
           <property name="font">
            <font>
-            <family>Helvetica Neue LT</family>
-            <pointsize>6</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
+            <family>Helvetica Neue LT Extended</family>
+            <pointsize>7</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Close&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -752,7 +771,7 @@
    <property name="geometry">
     <rect>
      <x>375</x>
-     <y>468</y>
+     <y>469</y>
      <width>28</width>
      <height>24</height>
     </rect>
@@ -784,7 +803,7 @@
  </widget>
  <tabstops>
   <tabstop>min_btn</tabstop>
-  <tabstop>ext_btn</tabstop>
+  <tabstop>close_btn</tabstop>
   <tabstop>username</tabstop>
   <tabstop>password</tabstop>
   <tabstop>show_pwd</tabstop>

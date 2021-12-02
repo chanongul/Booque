@@ -20,8 +20,8 @@ class LogIn(QtWidgets.QWidget):
         self.curs = self.db.cursor()
         self.curs.execute("SELECT username, email FROM users")
         self.users_db = self.curs.fetchall()
-        self.usn_db = [i[0] for i in self.users_db]
-        self.eml_db = [i[1] for i in self.users_db]
+        self.usn_db = [str(i[0]) for i in self.users_db]
+        self.eml_db = [str(i[1]) for i in self.users_db]
         self.curs.execute("SELECT id, rmb FROM current_user")
         try:
             self.temp = self.curs.fetchone()
@@ -37,12 +37,12 @@ class LogIn(QtWidgets.QWidget):
         else:
             self.showNotRmb()
         self.setStyleSheet(style.default)
-        self.ext_btn.mousePressEvent = self.exit
-        self.min_btn.mousePressEvent = self.minimize
-        self.show_pwd.mousePressEvent = self.showPassword
-        self.login_btn.mousePressEvent = self.logIn
-        self.continue_btn.mousePressEvent = self.logIn
-        self.create_btn.mousePressEvent = self.signUp
+        self.close_btn.clicked.connect(self.exit)
+        self.min_btn.clicked.connect(self.minimize)
+        self.show_pwd.clicked.connect(self.showPassword)
+        self.login_btn.clicked.connect(self.logIn)
+        self.continue_btn.clicked.connect(self.logIn)
+        self.create_btn.clicked.connect(self.signUp)
         self.unrmb_btn.clicked.connect(self.notYou)
         self.password.textChanged.connect(self.hidePassword)
         self.cur_pos = QtCore.QPoint(1080, 620)
@@ -169,7 +169,6 @@ class LogIn(QtWidgets.QWidget):
                         "LogIn", "⚠ Password is incorrect."
                     )
                 )
-        event.accept()
 
     def signUp(self, event):
         self.sign_up = SignUp()
@@ -192,15 +191,14 @@ class SignUp(QtWidgets.QWidget):
         uic.loadUi("rsrc/ui/signup.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.fontDB = QtGui.QFontDatabase()
-        self.fontDB.addApplicationFont(":/Font/font/Better Grade/Better Grade.ttf")
-        self.fontDB.addApplicationFont(
-            ":/Font/font/Product Sans/Product Sans Regular.ttf"
-        )
         self.db = sqlite3.connect("rsrc/db/data.db")
         self.curs = self.db.cursor()
+        self.curs.execute("SELECT username, email FROM users")
+        self.users_db = self.curs.fetchall()
+        self.usn_db = [str(i[0]) for i in self.users_db]
+        self.eml_db = [str(i[1]) for i in self.users_db]
         self.setStyleSheet(style.default)
-        self.ext_btn.mousePressEvent = self.exit
+        self.close_btn.mousePressEvent = self.exit
         self.min_btn.mousePressEvent = self.minimize
         self.signup_btn.mousePressEvent = self.signUp
         self.back_btn.mousePressEvent = self.login
@@ -260,14 +258,6 @@ class SignUp(QtWidgets.QWidget):
             self.re_password.setStyleSheet(style.input)
 
     def signUp(self, event):
-        self.usn_query = "SELECT username FROM users"
-        self.curs.execute(self.usn_query)
-        self.users_db = self.curs.fetchall()
-        self.usn_db = [i[0] for i in self.users_db]
-        self.eml_query = "SELECT email FROM users"
-        self.curs.execute(self.eml_query)
-        self.emails_db = self.curs.fetchall()
-        self.eml_db = [i[0] for i in self.emails_db]
         if not self.f_name.text():
             self.f_name.setStyleSheet(style.error)
             self.f_name.textChanged.connect(self.fnChanged)

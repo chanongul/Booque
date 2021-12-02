@@ -25,7 +25,6 @@ class App(QtWidgets.QWidget):
         self.prof.setPixmap(QtGui.QPixmap(self.prof_img))
         self.prof.setScaledContents(True)
         self.prof_btn.setIcon(QtGui.QIcon(":/Image/img/frame.png"))
-        self.prof_btn.clicked.connect(self.goToProfile)
         self.menu = QtWidgets.QMenu("menu_list", self)
         self.menu.triggered.connect(lambda x: self.menuHandler(x.text()))
         self.menu.addAction("Library").setIcon(QtGui.QIcon("rsrc/img/library.ico"))
@@ -40,10 +39,6 @@ class App(QtWidgets.QWidget):
     def goToHome(self):
         self.setWindowTitle("Booque - Home")
         self.app_panel.setCurrentIndex(0)
-
-    def goToProfile(self):
-        self.setWindowTitle("Booque - Profile")
-        self.app_panel.setCurrentIndex(1)
 
     def menuHandler(self, action):
         if action == "Profile":

@@ -66,30 +66,6 @@ QMenu::item:selected {
     <number>0</number>
    </property>
    <item row="1" column="0">
-    <widget class="QStackedWidget" name="app_panel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>1200</width>
-       <height>610</height>
-      </size>
-     </property>
-     <widget class="Home" name="home_page"/>
-     <widget class="Profile" name="profile_page"/>
-     <widget class="Edit" name="edit_page"/>
-     <widget class="Library" name="library_page"/>
-     <widget class="Request" name="request_page"/>
-     <widget class="Setting" name="setting_page"/>
-     <widget class="Book" name="book_page"/>
-     <widget class="Chart" name="chart_page"/>
-    </widget>
-   </item>
-   <item row="0" column="0">
     <widget class="QFrame" name="navbar">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -111,7 +87,7 @@ QMenu::item:selected {
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>30</number>
+       <number>40</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -120,13 +96,13 @@ QMenu::item:selected {
        <widget class="QPushButton" name="home_btn">
         <property name="minimumSize">
          <size>
-          <width>280</width>
+          <width>230</width>
           <height>110</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>280</width>
+          <width>230</width>
           <height>110</height>
          </size>
         </property>
@@ -293,10 +269,13 @@ QMenu::item:selected {
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>10</height>
+            <height>35</height>
            </size>
           </property>
          </spacer>
@@ -304,6 +283,30 @@ QMenu::item:selected {
        </layout>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QStackedWidget" name="app_panel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>1200</width>
+       <height>610</height>
+      </size>
+     </property>
+     <widget class="Home" name="home_page"/>
+     <widget class="Profile" name="profile_page"/>
+     <widget class="Edit" name="edit_page"/>
+     <widget class="Library" name="library_page"/>
+     <widget class="Request" name="request_page"/>
+     <widget class="Setting" name="setting_page"/>
+     <widget class="Book" name="book_page"/>
+     <widget class="Chart" name="chart_page"/>
     </widget>
    </item>
   </layout>
