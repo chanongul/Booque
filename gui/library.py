@@ -76,7 +76,7 @@ class Library(QtWidgets.QWidget):
             pass
 
     def handleSortBox(self, index):
-        if index == 0:
+        if index == 0: 
             print("a-z")
         elif index == 1:
             print("z-a")
