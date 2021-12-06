@@ -46,24 +46,25 @@ class Library(QtWidgets.QWidget):
                 elif child.layout() is not None:
                     self.clearLayout(child.layout())
 
-    def updateCatalog(self, ll):
+    def updateCatalog(self, ll, type=None):
         self.clearLayout(self.book_shelf)
-        self.cur_ll = ll
-        if self.cur_ll:
+        if not type:
+            self.cur_ll = ll
+        if ll:
             self.no_match.hide()
-            for i in range(len(self.cur_ll)):
-                self.book_ids.append(self.cur_ll[i][0])
-                self.book_titles.append(self.cur_ll[i][1])
-                self.book_imgs.append(self.cur_ll[i][2])
-                self.book_authors.append(self.cur_ll[i][3])
+            for i in range(len(ll)):
+                self.book_ids.append(ll[i][0])
+                self.book_titles.append(ll[i][1])
+                self.book_imgs.append(ll[i][2])
+                self.book_authors.append(ll[i][3])
             self.pos = [
                 [r, c]
-                for r in range(int(len(self.cur_ll) / self.column) + 1)
+                for r in range(int(len(ll) / self.column) + 1)
                 for c in range(self.column)
             ]
             self.button = [
                 [[] for c in range(self.column)]
-                for r in range(int(len(self.cur_ll) / self.column) + 1)
+                for r in range(int(len(ll) / self.column) + 1)
             ]
             for pos, id, title, img, author in zip(
                 self.pos,
@@ -77,11 +78,13 @@ class Library(QtWidgets.QWidget):
                 self.title_label.setFont(QtGui.QFont("Product Sans", 12))
                 self.title_label.setWordWrap(True)
                 self.title_label.setAlignment(QtCore.Qt.AlignCenter)
+                self.title_label.setMaximumWidth(250)
                 self.author_label = QtWidgets.QLabel()
                 self.author_label.setText(author)
-                self.author_label.setFont(QtGui.QFont("Product Sans", 8))
+                self.author_label.setFont(QtGui.QFont("Product Sans", 10))
                 self.author_label.setWordWrap(True)
                 self.author_label.setAlignment(QtCore.Qt.AlignCenter)
+                self.author_label.setMaximumWidth(250)
                 self.button = QtWidgets.QPushButton()
                 self.pixmap = QtGui.QPixmap(img)
                 self.button.setIcon(QtGui.QIcon(self.pixmap))
@@ -103,9 +106,13 @@ class Library(QtWidgets.QWidget):
         else:
             self.no_match.show()
 
-
     def search(self):
-        self.updateCatalog(db.database.books_ll.search(self.search_bar.text()))
+        if self.search_bar.text():
+            temp = self.cur_ll.search(self.search_bar.text())
+            self.updateCatalog(temp, 1)
+            self.search_bar.setText("")
+        else:
+            self.updateCatalog(self.cur_ll)
 
     def handleSortBox(self, index):
         self.sort = index

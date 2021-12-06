@@ -19,9 +19,9 @@ class Request(QtWidgets.QWidget):
         self.submit_btn.clicked.connect(self.submitReq)
 
     def submitReq(self):
-        if self.req_title.text().upper() in [
-            i[1].upper() for i in self.books_ll
-        ] and self.req_author.text().upper() in [i[2].upper() for i in self.books_ll]:
+        if self.req_title.text().upper() not in [
+            i[1].upper() for i in db.database.books_ll
+        ] and self.req_author.text().upper() not in [i[2].upper() for i in db.database.books_ll]:
             if self.req_title.text() and self.req_author.text():
                 self.req_info = db.RequestNode(
                     app.id, self.req_title.text(), self.req_author.text()

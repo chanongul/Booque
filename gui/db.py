@@ -51,7 +51,7 @@ class Database:
             for i in range(len(users_db)):
                 user_db[i] = UserNode(
                     users_db[i][0],
-                    users_db[i][3],
+                    users_db[i][1],
                     users_db[i][2],
                     users_db[i][3],
                     users_db[i][4],
@@ -619,13 +619,14 @@ class BookLinkedList:
         while cur:
             title = cur.title.split()
             for t in title:
-                if t.upper().startswith(key):
+                if t.upper().startswith(key) and not added:
                     res.append(cur)
                     added = True
             author = cur.author.split()
             for a in author:
                 if a.upper().startswith(key) and not added:
                     res.append(cur)
+                    added = True
             cur = cur.next
             added = False
         if not cur:

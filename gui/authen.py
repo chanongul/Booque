@@ -127,7 +127,6 @@ class LogIn(QtWidgets.QWidget):
                     db.database.db.commit()
                     db.database.updateDatabase(False, False, True, False)
 
-                    self.movie.start()
                     mainApp = app.App(self.user_id)
                     mainApp.show()
                     self.close()
