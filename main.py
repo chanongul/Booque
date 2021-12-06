@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtWidgets
-from gui import db, authen, library
+from gui import db, authen
 
 
 def run():
