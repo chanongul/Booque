@@ -23,11 +23,11 @@ class Library(QtWidgets.QWidget):
         self.no_match.hide()
         self.updateCatalog(db.database.books_ll)
         self.search_btn.clicked.connect(self.search)
-        self.sort_box.activated.connect(lambda x: self.handleSortBox(x))
-        self.genre_box.activated.connect(lambda x: self.handleGenreBox(x))
+        self.sort_box.activated.connect(lambda x: self.setSort(x))
+        self.genre_box.activated.connect(lambda x: self.setGenre(x))
 
-    def goToBook(self, book_id):
-        authen.mainApp.setWindowTitle("Booque - ")
+    def goToBook(self, book_id, book_title):
+        authen.mainApp.setWindowTitle("Booque - " + book_title)
         authen.mainApp.app_panel.setCurrentIndex(5)
         book.bookApp.setId(int(book_id))
 
@@ -86,15 +86,16 @@ class Library(QtWidgets.QWidget):
                 self.author_label.setAlignment(QtCore.Qt.AlignCenter)
                 self.author_label.setMaximumWidth(250)
                 self.button = QtWidgets.QPushButton()
-                self.pixmap = QtGui.QPixmap(img)
-                self.button.setIcon(QtGui.QIcon(self.pixmap))
+                self.button.setIcon(QtGui.QIcon(QtGui.QPixmap(img)))
                 self.button.setSizePolicy(
                     QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
                 )
                 self.button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
                 self.button.setMinimumSize(250, 380)
-                self.button.setIconSize(QtCore.QSize(250, 380))
-                self.button.clicked.connect(lambda x, id=id: self.goToBook(id))
+                self.button.setIconSize(self.button.minimumSize())
+                self.button.clicked.connect(
+                    lambda x, id=id, title=title: self.goToBook(id, title)
+                )
                 self.book_container = QtWidgets.QVBoxLayout()
                 self.book_container.setSpacing(4)
                 self.book_container.addWidget(
@@ -110,30 +111,31 @@ class Library(QtWidgets.QWidget):
         if self.search_bar.text():
             temp = self.cur_ll.search(self.search_bar.text())
             self.updateCatalog(temp, 1)
-            self.search_bar.setText("")
         else:
             self.updateCatalog(self.cur_ll)
 
-    def handleSortBox(self, index):
+    def setSort(self, index):
+        self.search_bar.setText("")
         self.sort = index
         self.updateCatalog(self.cur_ll.sort(self.sort))
 
-    def handleGenreBox(self, index):
+    def setGenre(self, index):
+        self.search_bar.setText("")
         if index == 0:
             self.updateCatalog(db.database.books_ll.sort(self.sort))
         elif index == 1:
-            self.updateCatalog(db.database.fiction_ll.sort(self.sort))
+            self.updateCatalog(db.database.fictions_ll.sort(self.sort))
         elif index == 2:
-            self.updateCatalog(db.database.thriller_ll.sort(self.sort))
+            self.updateCatalog(db.database.thrillers_ll.sort(self.sort))
         elif index == 3:
-            self.updateCatalog(db.database.fantasy_ll.sort(self.sort))
+            self.updateCatalog(db.database.fantasies_ll.sort(self.sort))
         elif index == 4:
-            self.updateCatalog(db.database.romance_ll.sort(self.sort))
+            self.updateCatalog(db.database.romances_ll.sort(self.sort))
         elif index == 5:
-            self.updateCatalog(db.database.biography_ll.sort(self.sort))
+            self.updateCatalog(db.database.biographies_ll.sort(self.sort))
         elif index == 6:
-            self.updateCatalog(db.database.comedy_ll.sort(self.sort))
+            self.updateCatalog(db.database.comedies_ll.sort(self.sort))
         elif index == 7:
-            self.updateCatalog(db.database.horror_ll.sort(self.sort))
+            self.updateCatalog(db.database.horrors_ll.sort(self.sort))
         elif index == 8:
-            self.updateCatalog(db.database.poetry_ll.sort(self.sort))
+            self.updateCatalog(db.database.poetries_ll.sort(self.sort))

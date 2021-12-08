@@ -15,7 +15,7 @@ class Request(QtWidgets.QWidget):
         reqApp = self
         self.setStyleSheet(style.default)
         self.msg = QtWidgets.QMessageBox()
-        self.msg.setWindowIcon(QtGui.QIcon(":/Image/img/logo.png"))
+        self.msg.setWindowIcon(QtGui.QIcon("rsrc/img/logo.png"))
         self.submit_btn.clicked.connect(self.submitReq)
 
     def submitReq(self):
