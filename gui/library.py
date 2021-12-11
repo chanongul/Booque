@@ -16,19 +16,26 @@ class Library(QtWidgets.QWidget):
         self.setStyleSheet(style.default)
         self.book_ids = []
         self.book_titles = []
-        self.book_imgs = []
         self.book_authors = []
         self.book_rating = []
+        self.book_imgs = []
         self.column = 4
         self.sort = 0
         self.no_match.hide()
-        self.updateCatalog(db.database.books_ll)
         self.search_btn.clicked.connect(self.search)
         self.sort_box.activated.connect(lambda x: self.setSort(x))
         self.genre_box.activated.connect(lambda x: self.setGenre(x))
         QtWidgets.QScroller.grabGesture(
             self.scrollArea, QtWidgets.QScroller.LeftMouseButtonGesture
         )
+        self.book_imgs_all = db.BookLinkedList()
+        for i in db.database.books_ll:
+            self.book_imgs_all.append(
+                db.BookNode(
+                    i[0], i[1], QtGui.QPixmap(i[2]), None, None, None, None, i[7]
+                )
+            )
+        self.updateCatalog(db.database.books_ll)
 
     def goToBook(self, book_id, book_title):
         authen.mainApp.setWindowTitle("Booque - " + book_title)
@@ -38,9 +45,9 @@ class Library(QtWidgets.QWidget):
     def clearLayout(self, layout):
         self.book_ids = []
         self.book_titles = []
-        self.book_imgs = []
         self.book_authors = []
         self.book_ratings = []
+        self.book_imgs = []
         self.pos = []
         self.button = []
         if layout is not None:
@@ -60,9 +67,12 @@ class Library(QtWidgets.QWidget):
             for i in ll:
                 self.book_ids.append(i[0])
                 self.book_titles.append(i[1])
-                self.book_imgs.append(i[2])
                 self.book_authors.append(i[3])
                 self.book_ratings.append(float(i[7]))
+            for i in self.book_ids:
+                for j in self.book_imgs_all:
+                    if i == j[0]:
+                        self.book_imgs.append(j[2])
             self.pos = [
                 [r, c]
                 for r in range(int(len(ll) / self.column) + 1)

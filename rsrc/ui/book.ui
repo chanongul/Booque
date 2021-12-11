@@ -1437,6 +1437,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../rsrc.qrc"/>
+ </resources>
  <connections/>
 </ui>

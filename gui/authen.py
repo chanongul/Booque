@@ -1,6 +1,5 @@
 import sys, os
 from PyQt5 import QtWidgets, QtGui, QtCore, uic
-from PyQt5.QtGui import QMovie
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from gui import app, db
@@ -31,12 +30,14 @@ class LogIn(QtWidgets.QWidget):
         self.setStyleSheet(style.default)
         self.close_btn.clicked.connect(self.exit)
         self.min_btn.clicked.connect(self.minimize)
-        self.show_pwd.clicked.connect(self.showPassword)
+        self.show_pwd.toggled.connect(self.showPassword)
         self.login_btn.clicked.connect(self.logIn)
         self.continue_btn.clicked.connect(self.logIn)
         self.create_btn.clicked.connect(self.signUp)
         self.unrmb_btn.clicked.connect(self.notYou)
         self.password.textChanged.connect(self.hidePassword)
+        self.password.textChanged.connect(lambda: self.show_pwd.setChecked(False))
+        self.remember.toggled.connect(self.isRemembered)
         self.cur_pos = QtCore.QPoint(1080, 620)
 
     def mousePressEvent(self, event):
@@ -96,12 +97,20 @@ class LogIn(QtWidgets.QWidget):
         else:
             self.password.setStyleSheet(style.input)
 
-    def logIn(self):
+    def isRemembered(self):
+        return self.remember.isChecked()
+
+    def startApp(self):
         global mainApp
+        self.close()
+        mainApp = app.App(self.user_id)
+        mainApp.show()
+
+    def logIn(self):
         if self.rmb:
-            mainApp = app.App(self.user_id)
-            mainApp.show()
-            self.close()
+            LoadingScreen()
+            self.timer = QtCore.QTimer
+            self.timer.singleShot(1, self.startApp)
         else:
             if (
                 self.username.text() in self.usn_db
@@ -119,7 +128,7 @@ class LogIn(QtWidgets.QWidget):
                     if i[3] == self.username.text() or i[5] == self.username.text()
                 ][0]
                 if self.password.text() == self.pwd_db:
-                    self.cur_user = [self.user_id, self.remember.isChecked()]
+                    self.cur_user = [self.user_id, self.isRemembered()]
                     db.database.curs.execute(
                         "INSERT INTO current_user (id, rmb) VALUES (?,?)",
                         self.cur_user,
@@ -127,9 +136,9 @@ class LogIn(QtWidgets.QWidget):
                     db.database.db.commit()
                     db.database.updateDatabase(False, False, False, True)
 
-                    mainApp = app.App(self.user_id)
-                    mainApp.show()
-                    self.close()
+                    LoadingScreen()
+                    self.timer = QtCore.QTimer
+                    self.timer.singleShot(1, self.startApp)
                 else:
                     self.password.clear()
                     if self.password.text() == "":
@@ -160,12 +169,12 @@ class LogIn(QtWidgets.QWidget):
                     )
                 )
 
-    def signUp(self, event):
+    def signUp(self):
         self.sign_up = SignUp()
         self.sign_up.show()
         self.close()
 
-    def showPassword(self, event):
+    def showPassword(self):
         if self.password.echoMode() == QtWidgets.QLineEdit.Normal:
             self.hidePassword()
         else:
@@ -181,17 +190,22 @@ class SignUp(QtWidgets.QWidget):
         uic.loadUi("rsrc/ui/signup.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setGraphicsEffect(
+            QtWidgets.QGraphicsDropShadowEffect(blurRadius=25, xOffset=5, yOffset=5)
+        )
         self.usn_db = [str(i[3]) for i in db.database.users_ll]
         self.eml_db = [str(i[5]) for i in db.database.users_ll]
         self.setStyleSheet(style.default)
-        self.close_btn.mousePressEvent = self.exit
-        self.min_btn.mousePressEvent = self.minimize
-        self.signup_btn.mousePressEvent = self.signUp
-        self.back_btn.mousePressEvent = self.login
-        self.show_pwd.mousePressEvent = self.showPassword
-        self.show_repwd.mousePressEvent = self.showRePassword
+        self.close_btn.clicked.connect(self.exit)
+        self.min_btn.clicked.connect(self.minimize)
+        self.signup_btn.clicked.connect(self.signUp)
+        self.back_btn.clicked.connect(self.login)
+        self.show_pwd.toggled.connect(self.showPassword)
+        self.show_repwd.toggled.connect(self.showRePassword)
         self.password.textChanged.connect(self.hidePassword)
+        self.password.textChanged.connect(lambda: self.show_pwd.setChecked(False))
         self.re_password.textChanged.connect(self.hideRePassword)
+        self.re_password.textChanged.connect(lambda: self.show_repwd.setChecked(False))
         self.cur_pos = QtCore.QPoint(1080, 620)
         self.msg = QtWidgets.QMessageBox()
         self.msg.setWindowIcon(QtGui.QIcon("rsrc/img/logo.png"))
@@ -203,10 +217,10 @@ class SignUp(QtWidgets.QWidget):
         self.move(self.pos() + event.globalPos() - self.cur_pos)
         self.cur_pos = event.globalPos()
 
-    def minimize(self, event):
+    def minimize(self):
         self.setWindowState(QtCore.Qt.WindowState.WindowMinimized)
 
-    def exit(self, event):
+    def exit(self):
         sys.exit(0)
 
     def fnChanged(self, txt):
@@ -245,7 +259,7 @@ class SignUp(QtWidgets.QWidget):
         else:
             self.re_password.setStyleSheet(style.input)
 
-    def signUp(self, event):
+    def signUp(self):
         if not self.f_name.text():
             self.f_name.setStyleSheet(style.error)
             self.f_name.textChanged.connect(self.fnChanged)
@@ -351,18 +365,18 @@ class SignUp(QtWidgets.QWidget):
             self.log_in.show()
             self.close()
 
-    def login(self, event):
+    def login(self):
         self.log_in = LogIn()
         self.log_in.show()
         self.close()
 
-    def showPassword(self, event):
+    def showPassword(self):
         if self.password.echoMode() == QtWidgets.QLineEdit.Normal:
             self.hidePassword()
         else:
             self.password.setEchoMode(QtWidgets.QLineEdit.Normal)
 
-    def showRePassword(self, event):
+    def showRePassword(self):
         if self.re_password.echoMode() == QtWidgets.QLineEdit.Normal:
             self.hideRePassword()
         else:
@@ -373,3 +387,21 @@ class SignUp(QtWidgets.QWidget):
 
     def hideRePassword(self):
         self.re_password.setEchoMode(QtWidgets.QLineEdit.Password)
+
+
+class LoadingScreen(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        global loading
+        loading = self
+        self.setFixedSize(240, 240)
+        self.setWindowFlags(
+            QtCore.Qt.WindowType.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint
+        )
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.loading = QtWidgets.QLabel(self)
+        self.loading.setFixedSize(240, 240)
+        self.loading.setPixmap(QtGui.QPixmap("rsrc/img/loading.png"))
+        self.loading.setScaledContents(True)
+        self.loading.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.show()

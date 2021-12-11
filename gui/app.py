@@ -15,6 +15,7 @@ class App(QtWidgets.QWidget):
         global dark
         dark = False
         uic.loadUi("rsrc/ui/app.ui", self)
+        authen.loading.close()
         self.setWindowTitle("Booque - Home")
         self.setStyleSheet(style.default)
         self.app_panel.setCurrentIndex(0)
@@ -58,7 +59,6 @@ class App(QtWidgets.QWidget):
         if action == "Chart":
             self.setWindowTitle("Booque - Charts")
             self.app_panel.setCurrentIndex(6)
-            # chart.chartApp.updateGenre("All genre", db.database)
         elif action == "Log out":
             db.database.curs.execute("DELETE FROM current_user")
             db.database.db.commit()

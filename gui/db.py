@@ -116,7 +116,8 @@ class Database:
                     books_db[i][4],
                     books_db[i][5],
                     books_db[i][6],
-                    books_rating_avg[i],
+                    # books_rating_avg[i],
+                    books_db[i][7],
                 )
                 self.books_ll.append(book_db[i])
             self.books_ll.sort(0)
@@ -409,7 +410,7 @@ class BookNode:
                     str(self.img),
                     str(self.author),
                     str(self.pages),
-                    # str(self.synop),
+                    str(self.synop),
                     str(self.genre),
                     str(self.rating),
                 ]

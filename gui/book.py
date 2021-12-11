@@ -431,7 +431,6 @@ class Book(QtWidgets.QWidget):
         date_created = datetime.datetime.now(LOCAL_TIMEZONE).strftime(
             "%a, %d %b %Y at %I:%M %p"
         )
-        posted = False
         if self.comment.toPlainText():
             db.database.curs.execute(
                 "INSERT INTO Comments (book_id, user_id, comment, date_created) VALUES (?,?,?,?)",
@@ -445,8 +444,6 @@ class Book(QtWidgets.QWidget):
             db.database.db.commit()
             db.database.updateDatabase(True, False, False, False)
             self.comment.clear()
-            posted = True
-
         if self.rating != self.past_rating:
             try:
                 past_rating = [
@@ -471,17 +468,20 @@ class Book(QtWidgets.QWidget):
                     + str(app.id)
                 )
             db.database.db.commit()
-            db.database.updateDatabase(True, False, True, False)
+            db.database.updateDatabase(True, False, False, False)
+            ratings = []
+            for i in db.database.ratings_ll:
+                if i[1] == self.book_id:
+                    ratings.append(i[3])
+            db.database.curs.execute(
+                "UPDATE books SET rating="
+                + str(float(sum(ratings) / len(ratings)))
+                + " WHERE book_id="
+                + str(self.book_id)
+            )
+            db.database.db.commit()
+            db.database.updateDatabase(False, False, True, False)
             self.book_rating.setText("⭐ {0:.2f}".format(self.rating))
-            posted = True
-
-        if posted:
-            self.msg.setIcon(QtWidgets.QMessageBox.Information)
-            self.msg.setWindowTitle("Comment posted!")
-            self.msg.setText("Your review is posted to the book.")
-            self.msg.exec_()
-            posted = False
-
         self.updateComment()
 
     def delComment(self, comment_id):
