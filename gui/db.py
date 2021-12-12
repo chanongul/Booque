@@ -1,5 +1,6 @@
 import sys, os, sqlite3, random
 from PyQt5 import QtGui
+from PyQt5.QtWidgets import QApplication
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -8,8 +9,10 @@ class Database:
     def __init__(self):
         self.db = sqlite3.connect("rsrc/db/data.db")
         self.curs = self.db.cursor()
-        self.updateDatabase(True, True, True, True)
         self.req_q = RequestQueue()
+        # app = QApplication(sys.argv)
+        # self.updateDatabase(False, False, True, False)
+        # sys.exit(app.exec_())
 
     def initFont(self):
         self.fontDB = QtGui.QFontDatabase()
@@ -43,6 +46,13 @@ class Database:
         self.fontDB.addApplicationFont(
             "rsrc/font/Helvetica Neue/Helvetica Neue LT 23 Ultra Light Extended Oblique.ttf"
         )
+
+    def initBookImg(self):
+        self.book_img = []
+        self.curs.execute("SELECT * FROM books")
+        books_db = self.curs.fetchall()
+        for i in books_db:
+            self.book_img.append(QtGui.QPixmap(i[2]))
 
     def updateDatabase(self, reviews=False, users=False, books=False, cur_user=False):
         if reviews:
@@ -95,28 +105,16 @@ class Database:
             self.curs.execute("SELECT * FROM books")
             books_db = self.curs.fetchall()
             book_db = [i for i in range(len(books_db))]
-            books_rating = []
-            books_rating_avg = []
-            books_id = [i[0] for i in books_db]
-            for i in books_id:
-                books_rating.append([x[3] for x in self.ratings_ll if x[1] == i])
-            for i in books_rating:
-                if len(i) > 0:
-                    books_rating_avg.append(float(sum(i) / len(i)))
-                else:
-                    books_rating_avg.append(0)
-
             self.books_ll = BookLinkedList()
             for i in range(len(books_db)):
                 book_db[i] = BookNode(
                     books_db[i][0],
                     books_db[i][1],
-                    books_db[i][2],
+                    self.book_img[i],
                     books_db[i][3],
                     books_db[i][4],
                     books_db[i][5],
                     books_db[i][6],
-                    # books_rating_avg[i],
                     books_db[i][7],
                 )
                 self.books_ll.append(book_db[i])

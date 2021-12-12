@@ -41,6 +41,10 @@ class Chart(QtWidgets.QWidget):
         self.no3_btn.setIconSize(self.no3_btn.size())
         self.updateGenre("All Genre")
 
+    def reset(self):
+        self.updateGenre("All Genre")
+        self.all_btn.setChecked(True)
+
     def updateGenre(self, genre):
         self.genre_label.setText(genre)
         if genre == "All Genre":
@@ -79,9 +83,9 @@ class Chart(QtWidgets.QWidget):
             self.no1 = db.database.poetries_ll.sort(2)[0]
             self.no2 = db.database.poetries_ll.sort(2)[1]
             self.no3 = db.database.poetries_ll.sort(2)[2]
-        self.no1_btn.setIcon(QtGui.QIcon(QtGui.QPixmap(self.no1[2])))
-        self.no2_btn.setIcon(QtGui.QIcon(QtGui.QPixmap(self.no2[2])))
-        self.no3_btn.setIcon(QtGui.QIcon(QtGui.QPixmap(self.no3[2])))
+        self.no1_btn.setIcon(QtGui.QIcon(self.no1[2]))
+        self.no2_btn.setIcon(QtGui.QIcon(self.no2[2]))
+        self.no3_btn.setIcon(QtGui.QIcon(self.no3[2]))
         self.no1_rating.setText("⭐ {0:.2f}".format(float(self.no1[7])))
         self.no2_rating.setText("⭐ {0:.2f}".format(float(self.no2[7])))
         self.no3_rating.setText("⭐ {0:.2f}".format(float(self.no3[7])))

@@ -2,7 +2,7 @@ import sys, os
 from PyQt5 import QtWidgets, QtGui, uic
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-from gui import authen, db
+from gui import authen, chart, db, library
 import rsrc.rsrc
 import rsrc.style.app as style
 
@@ -49,6 +49,7 @@ class App(QtWidgets.QWidget):
             self.app_panel.setCurrentIndex(1)
         elif action == "Library":
             self.setWindowTitle("Booque - Library")
+            library.libApp.reset()
             self.app_panel.setCurrentIndex(2)
         elif action == "Request":
             self.setWindowTitle("Booque - Request")
@@ -58,6 +59,7 @@ class App(QtWidgets.QWidget):
             self.app_panel.setCurrentIndex(4)
         if action == "Chart":
             self.setWindowTitle("Booque - Charts")
+            chart.chartApp.reset()
             self.app_panel.setCurrentIndex(6)
         elif action == "Log out":
             db.database.curs.execute("DELETE FROM current_user")

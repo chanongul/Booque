@@ -28,26 +28,23 @@ class Library(QtWidgets.QWidget):
         QtWidgets.QScroller.grabGesture(
             self.scrollArea, QtWidgets.QScroller.LeftMouseButtonGesture
         )
-        self.book_imgs_all = db.BookLinkedList()
-        for i in db.database.books_ll:
-            self.book_imgs_all.append(
-                db.BookNode(
-                    i[0], i[1], QtGui.QPixmap(i[2]), None, None, None, None, i[7]
-                )
-            )
-        self.updateCatalog(db.database.books_ll)
+        self.reset()
 
     def goToBook(self, book_id, book_title):
         authen.mainApp.setWindowTitle("Booque - " + book_title)
         authen.mainApp.app_panel.setCurrentIndex(5)
         book.bookApp.setId(int(book_id))
 
+    def reset(self):
+        self.cur_ll = db.database.books_ll
+        self.updateCatalog(self.cur_ll.sort(self.sort))
+
     def clearLayout(self, layout):
         self.book_ids = []
         self.book_titles = []
+        self.book_imgs = []
         self.book_authors = []
         self.book_ratings = []
-        self.book_imgs = []
         self.pos = []
         self.button = []
         if layout is not None:
@@ -59,6 +56,7 @@ class Library(QtWidgets.QWidget):
                     self.clearLayout(child.layout())
 
     def updateCatalog(self, ll, type=None):
+        self.scrollArea.verticalScrollBar().setValue(0)
         self.clearLayout(self.book_shelf)
         if not type:
             self.cur_ll = ll
@@ -67,12 +65,9 @@ class Library(QtWidgets.QWidget):
             for i in ll:
                 self.book_ids.append(i[0])
                 self.book_titles.append(i[1])
+                self.book_imgs.append(i[2])
                 self.book_authors.append(i[3])
                 self.book_ratings.append(float(i[7]))
-            for i in self.book_ids:
-                for j in self.book_imgs_all:
-                    if i == j[0]:
-                        self.book_imgs.append(j[2])
             self.pos = [
                 [r, c]
                 for r in range(int(len(ll) / self.column) + 1)
@@ -112,7 +107,7 @@ class Library(QtWidgets.QWidget):
                 rating_label.setMinimumWidth(250)
                 rating_label.setMaximumHeight(30)
                 button = QtWidgets.QPushButton(self.scrollAreaContents)
-                button.setIcon(QtGui.QIcon(QtGui.QPixmap(img)))
+                button.setIcon(QtGui.QIcon(img))
                 button.setSizePolicy(
                     QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
                 )

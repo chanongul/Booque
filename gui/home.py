@@ -1,5 +1,5 @@
 import sys, os
-from PyQt5 import QtWidgets, QtCore, QtGui, uic
+from PyQt5 import QtWidgets, QtGui, uic
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from gui import app, authen, book, db
@@ -65,13 +65,7 @@ class Home(QtWidgets.QWidget):
             self.cur_label.setText("You are currently reading")
             self.cur_btn.setIcon(
                 QtGui.QIcon(
-                    QtGui.QPixmap(
-                        [
-                            i[2]
-                            for i in db.database.books_ll
-                            if int(i[0]) == int(book_id)
-                        ][0]
-                    )
+                    [i[2] for i in db.database.books_ll if int(i[0]) == int(book_id)][0]
                 )
             )
             self.cur_btn.clicked.connect(
@@ -85,7 +79,7 @@ class Home(QtWidgets.QWidget):
         else:
             self.cur_label.setText("Recommended for you")
             self.recommended_book = db.database.books_ll.recommended()
-            self.cur_btn.setIcon(QtGui.QIcon(QtGui.QPixmap(self.recommended_book[2])))
+            self.cur_btn.setIcon(QtGui.QIcon(self.recommended_book[2]))
             self.cur_btn.clicked.connect(
                 lambda: self.goToBook(
                     self.recommended_book[0], self.recommended_book[1]

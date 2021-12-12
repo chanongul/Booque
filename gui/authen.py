@@ -16,6 +16,8 @@ class LogIn(QtWidgets.QWidget):
         self.setGraphicsEffect(
             QtWidgets.QGraphicsDropShadowEffect(blurRadius=25, xOffset=5, yOffset=5)
         )
+        db.database.initBookImg()
+        db.database.updateDatabase(False, True, False, True)
         self.usn_db = [str(i[3]) for i in db.database.users_ll]
         self.eml_db = [str(i[5]) for i in db.database.users_ll]
         self.user_id = db.database.cur_user[0]
@@ -103,6 +105,7 @@ class LogIn(QtWidgets.QWidget):
     def startApp(self):
         global mainApp
         self.close()
+        db.database.updateDatabase(True, False, True, False)
         mainApp = app.App(self.user_id)
         mainApp.show()
 

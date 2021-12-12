@@ -50,6 +50,7 @@ class Book(QtWidgets.QWidget):
         self.star5.setScaledContents(True)
         self.user_img.setScaledContents(True)
         self.user_frame.setScaledContents(True)
+        self.reset_star_btn.clicked.connect(self.resetStar)
         self.submit_btn.clicked.connect(self.submitComment)
         QtWidgets.QScroller.grabGesture(
             self.scrollArea, QtWidgets.QScroller.LeftMouseButtonGesture
@@ -82,9 +83,7 @@ class Book(QtWidgets.QWidget):
             )
         )
         self.book_img.setPixmap(
-            QtGui.QPixmap(
-                [i[2] for i in db.database.books_ll if i[0] == self.book_id][0]
-            )
+            [i[2] for i in db.database.books_ll if i[0] == self.book_id][0]
         )
         self.book_img.setScaledContents(True)
         self.book_synop.setText(
@@ -239,6 +238,12 @@ class Book(QtWidgets.QWidget):
             self.star4.setPixmap(QtGui.QPixmap("rsrc/img/star_latter.png"))
             self.star45.setPixmap(QtGui.QPixmap("rsrc/img/star.png"))
             self.star5.setPixmap(QtGui.QPixmap("rsrc/img/star_latter.png"))
+
+        self.book_rating.setText(
+            "⭐ {0:.2f}".format(
+                [float(i[7]) for i in db.database.books_ll if i[0] == self.book_id][0]
+            )
+        )
 
     def clearLayout(self, layout):
         self.comment_id = []
@@ -427,6 +432,39 @@ class Book(QtWidgets.QWidget):
                 comment_container.addWidget(comment_date, 2)
                 self.comment_section.addLayout(comment_container, pos)
 
+    def resetStar(self):
+        if self.rating != 0.0:
+            db.database.curs.execute(
+                "DELETE FROM ratings WHERE book_id="
+                + str(self.book_id)
+                + " and user_id="
+                + str(app.id)
+            )
+            db.database.db.commit()
+            db.database.updateDatabase(True, False, False, False)
+            ratings = []
+            for i in db.database.ratings_ll:
+                if i[1] == self.book_id:
+                    ratings.append(i[3])
+            if ratings:
+                db.database.curs.execute(
+                    "UPDATE books SET rating="
+                    + str(float(sum(ratings) / len(ratings)))
+                    + " WHERE book_id="
+                    + str(self.book_id)
+                )
+            else:
+                db.database.curs.execute(
+                    "UPDATE books SET rating="
+                    + str(0.0)
+                    + " WHERE book_id="
+                    + str(self.book_id)
+                )
+            db.database.db.commit()
+            db.database.updateDatabase(False, False, True, False)
+            self.updateComment()
+            self.updateStar(0)
+
     def submitComment(self):
         date_created = datetime.datetime.now(LOCAL_TIMEZONE).strftime(
             "%a, %d %b %Y at %I:%M %p"
@@ -481,7 +519,13 @@ class Book(QtWidgets.QWidget):
             )
             db.database.db.commit()
             db.database.updateDatabase(False, False, True, False)
-            self.book_rating.setText("⭐ {0:.2f}".format(self.rating))
+            self.book_rating.setText(
+                "⭐ {0:.2f}".format(
+                    [float(i[7]) for i in db.database.books_ll if i[0] == self.book_id][
+                        0
+                    ]
+                )
+            )
         self.updateComment()
 
     def delComment(self, comment_id):

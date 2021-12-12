@@ -92,12 +92,39 @@ class Edit(QtWidgets.QWidget):
             db.database.db.commit()
             db.database.curs.execute("DELETE FROM ratings WHERE user_id=" + str(app.id))
             db.database.db.commit()
-            db.database.updateDatabase(False, True, False, True)
+            db.database.updateDatabase(True, True, False, True)
+            ratings = {}
+            for i in db.database.ratings_ll:
+                try:
+                    ratings[i[1]].append(i[3])
+                except:
+                    ratings[i[1]] = [i[3]]
+            if ratings:
+                ratings_avg = []
+                for i, j in zip(ratings.keys(), ratings.values()):
+                    j = float(sum(j) / len(j))
+                    ratings_avg.append([i, j])
+                    for i in ratings_avg:
+                        db.database.curs.execute(
+                            "UPDATE books SET rating="
+                            + str(i[1])
+                            + " WHERE book_id="
+                            + str(i[0])
+                        )
+            else:
+                for i in db.database.books_ll:
+                    db.database.curs.execute(
+                        "UPDATE books SET rating="
+                        + str(0.0)
+                        + " WHERE book_id="
+                        + str(i[0])
+                    )
+            db.database.db.commit()
+            db.database.updateDatabase(False, False, True, False)
 
             self.log_in = authen.LogIn()
             self.log_in.show()
             authen.mainApp.close()
-
 
     def uploadImage(self):
         self.file = QtWidgets.QFileDialog.getOpenFileName(
