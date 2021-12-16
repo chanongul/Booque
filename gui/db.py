@@ -1,6 +1,5 @@
 import sys, os, sqlite3, random
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -10,49 +9,61 @@ class Database:
         self.db = sqlite3.connect("rsrc/db/data.db")
         self.curs = self.db.cursor()
         self.req_q = RequestQueue()
-        # app = QApplication(sys.argv)
-        # self.updateDatabase(False, False, True, False)
-        # sys.exit(app.exec_())
 
-    def initFont(self):
-        self.fontDB = QtGui.QFontDatabase()
-        self.fontDB.addApplicationFont("rsrc/font/Better Grade/Better Grade.ttf")
-        self.fontDB.addApplicationFont("rsrc/font/Freight/Freight Big Black SC.ttf")
-        self.fontDB.addApplicationFont("rsrc/font/Palatino/Palatino.ttf")
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Product Sans/Product Sans Regular.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 93 Black Extended Oblique.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 87 Heavy Condensed Oblique.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 63 Medium Extended Oblique.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 63 Medium Extended.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 53 Extended.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 55 Roman.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 47 Light Condensed.ttf"
-        )
-        self.fontDB.addApplicationFont(
-            "rsrc/font/Helvetica Neue/Helvetica Neue LT 23 Ultra Light Extended Oblique.ttf"
-        )
+    def updateRsrc(self, init=None):
+        if init:
+            self.fontDB = QtGui.QFontDatabase()
+            self.fontDB.addApplicationFont("rsrc/font/Better Grade/Better Grade.ttf")
+            self.fontDB.addApplicationFont("rsrc/font/Freight/Freight Big Black SC.ttf")
+            self.fontDB.addApplicationFont("rsrc/font/Palatino/Palatino.ttf")
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Product Sans/Product Sans Regular.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 93 Black Extended Oblique.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 87 Heavy Condensed Oblique.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 63 Medium Extended Oblique.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 63 Medium Extended.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 53 Extended.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 55 Roman.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 47 Light Condensed.ttf"
+            )
+            self.fontDB.addApplicationFont(
+                "rsrc/font/Helvetica Neue/Helvetica Neue LT 23 Ultra Light Extended Oblique.ttf"
+            )
+            self.book_img = []
+            self.curs.execute("SELECT * FROM books")
+            books_db = self.curs.fetchall()
+            for i in books_db:
+                self.book_img.append(QtGui.QPixmap(i[2]))
+            self.star = QtGui.QPixmap("rsrc/img/star.png")
+            self.star_latter = QtGui.QPixmap("rsrc/img/star_latter.png")
+            self.star_off = QtGui.QPixmap("rsrc/img/star_off.png")
+            self.star_off_latter = QtGui.QPixmap("rsrc/img/star_off_latter.png")
 
-    def initBookImg(self):
-        self.book_img = []
-        self.curs.execute("SELECT * FROM books")
-        books_db = self.curs.fetchall()
-        for i in books_db:
-            self.book_img.append(QtGui.QPixmap(i[2]))
+        self.user_img = []
+        self.user_img_pixmap = []
+        self.curs.execute("SELECT * FROM users")
+        users_db = self.curs.fetchall()
+        default_prof = QtGui.QPixmap("rsrc/db/userimg/dafault-pic.png")
+        for i in users_db:
+            self.user_img.append([i[0], i[6]])
+            if i[6] == "rsrc/db/userimg/dafault-pic.png":
+                self.user_img_pixmap.append(default_prof)
+            else:
+                self.user_img_pixmap.append(QtGui.QPixmap(i[6]))
 
     def updateDatabase(self, reviews=False, users=False, books=False, cur_user=False):
         if reviews:
@@ -96,7 +107,7 @@ class Database:
                     users_db[i][3],
                     users_db[i][4],
                     users_db[i][5],
-                    users_db[i][6],
+                    self.user_img_pixmap[i],
                     users_db[i][7],
                 )
                 self.users_ll.append(user_db[i])
