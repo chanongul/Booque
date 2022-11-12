@@ -197,6 +197,8 @@ class Database:
         print()
         if not justReq:
             self.db.close()
+        # UPDATE SET ... TO ...
+        # DELETE FROM ...
 
 
 class CurUser:
@@ -593,7 +595,7 @@ class BookLinkedList:
             return second
         if second is None:
             return first
-        if self.sort_type == 2:
+        if self.sort_type == 4:
             if first.rating > second.rating:
                 first.next = self.merge(first.next, second)
                 first.next.prev = first
@@ -649,7 +651,7 @@ class BookLinkedList:
                         self.head = first
                         return first
 
-        elif self.sort_type == 3:
+        elif self.sort_type == 5:
             if first.rating < second.rating:
                 first.next = self.merge(first.next, second)
                 first.next.prev = first
@@ -735,8 +737,8 @@ class BookLinkedList:
                 for j in range(i, -1, -1):
                     if j != 0:
                         equal = True
-                        bNode = self[j].title.upper()
-                        fNode = self[j - 1].title.upper()
+                        bNode = self[j].title.upper().replace(" ", "")
+                        fNode = self[j - 1].title.upper().replace(" ", "")
                         if len(bNode) <= len(fNode):
                             for k in range(len(bNode)):
                                 if ord(bNode[k]) < ord(fNode[k]):
@@ -768,8 +770,8 @@ class BookLinkedList:
                 for j in range(i, -1, -1):
                     if j != 0:
                         equal = True
-                        bNode = self[j].title.upper()
-                        fNode = self[j - 1].title.upper()
+                        bNode = self[j].title.upper().replace(" ", "")
+                        fNode = self[j - 1].title.upper().replace(" ", "")
                         if len(bNode) <= len(fNode):
                             for k in range(len(bNode)):
                                 if ord(bNode[k]) > ord(fNode[k]):
@@ -797,8 +799,74 @@ class BookLinkedList:
                             elif equal == True:
                                 break
         elif self.sort_type == 2:
-            self.head = self.mergeSort(self.head)
+            for i in range(1, len(self), 1):
+                for j in range(i, -1, -1):
+                    if j != 0:
+                        equal = True
+                        bNode = self[j].author.upper().replace(" ", "")
+                        fNode = self[j - 1].author.upper().replace(" ", "")
+                        if len(bNode) <= len(fNode):
+                            for k in range(len(bNode)):
+                                if ord(bNode[k]) < ord(fNode[k]):
+                                    self.swap(self[j - 1], self[j])
+                                    equal = False
+                                    break
+                                elif ord(bNode[k]) > ord(fNode[k]):
+                                    equal = "more than"
+                                    break
+                            if equal == "more than":
+                                break
+                            elif equal == True:
+                                self.swap(self[j - 1], self[j])
+                        else:
+                            for k in range(len(fNode)):
+                                if ord(bNode[k]) < ord(fNode[k]):
+                                    self.swap(self[j - 1], self[j])
+                                    equal = False
+                                    break
+                                elif ord(bNode[k]) > ord(fNode[k]):
+                                    equal = "more than"
+                                    break
+                            if equal == "more than":
+                                break
+                            elif equal == True:
+                                break
         elif self.sort_type == 3:
+            for i in range(1, len(self), 1):
+                for j in range(i, -1, -1):
+                    if j != 0:
+                        equal = True
+                        bNode = self[j].author.upper().replace(" ", "")
+                        fNode = self[j - 1].author.upper().replace(" ", "")
+                        if len(bNode) <= len(fNode):
+                            for k in range(len(bNode)):
+                                if ord(bNode[k]) > ord(fNode[k]):
+                                    self.swap(self[j - 1], self[j])
+                                    equal = False
+                                    break
+                                elif ord(bNode[k]) < ord(fNode[k]):
+                                    equal = "less than"
+                                    break
+                            if equal == "less than":
+                                break
+                            elif equal == True:
+                                self.swap(self[j - 1], self[j])
+                        else:
+                            for k in range(len(fNode)):
+                                if ord(bNode[k]) > ord(fNode[k]):
+                                    self.swap(self[j - 1], self[j])
+                                    equal = False
+                                    break
+                                elif ord(bNode[k]) < ord(fNode[k]):
+                                    equal = "less than"
+                                    break
+                            if equal == "less than":
+                                break
+                            elif equal == True:
+                                break
+        elif self.sort_type == 4:
+            self.head = self.mergeSort(self.head)
+        elif self.sort_type == 5:
             self.head = self.mergeSort(self.head)
         return self
 
@@ -830,22 +898,32 @@ class BookLinkedList:
     def recommended(self):
         return self[random.randrange(len(self))]
 
-    def binarySearch(self, ll, l, r, title, author):
+    def binarySearch(self, ll, l, r, key, type):
         if l > r:
             return False
         mid = (l + r) // 2
-        if ll[mid].title.upper() == title and ll[mid].author.upper() == author:
-            return True
-        elif ll[mid].title.upper() > title and ll[mid].author.upper() > author:
-            return self.binarySearch(ll, l, mid - 1, title, author)
-        else:
-            return self.binarySearch(ll, mid + 1, r, title, author)
+        if type == 0:
+            if ll[mid].title.upper().replace(" ", "") == key:
+                return True
+            elif ll[mid].title.upper().replace(" ", "") > key:
+                return self.binarySearch(ll, l, mid - 1, key, type)
+            else:
+                return self.binarySearch(ll, mid + 1, r, key, type)
+        elif type == 1:
+            if ll[mid].author.upper().replace(" ", "") == key:
+                return True
+            elif ll[mid].author.upper().replace(" ", "") > key:
+                return self.binarySearch(ll, l, mid - 1, key, type)
+            else:
+                return self.binarySearch(ll, mid + 1, r, key, type)
 
     def existed(self, title, author):
-        title = title.upper()
-        author = author.upper()
+        title = title.upper().replace(" ", "")
+        author = author.upper().replace(" ", "")
         self.sort(0)
-        return self.binarySearch(self, 0, len(self) - 1, title, author)
+        if self.binarySearch(self, 0, len(self) - 1, title, 0):
+            self.sort(2)
+            return self.binarySearch(self, 0, len(self) - 1, author, 1)
 
 
 class CommentNode:
@@ -1147,9 +1225,6 @@ class RequestNode:
     def __getitem__(self, index):
         self.items = [self.title, self.author]
         return self.items[index]
-
-    def __len__(self):
-        return 1
 
     def __str__(self):
         return "[" + ", ".join([str(self.title), str(self.author)]) + "]"

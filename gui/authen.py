@@ -1200,6 +1200,7 @@ class SignUp(QtWidgets.QWidget):
                 self.password.text(),
                 self.email.text() if self.email.text() else None,
             ]
+            print(self.user_info)
             db.database.curs.execute(
                 "INSERT INTO users (f_name, l_name, username, password, email) VALUES (?,?,?,?,?)",
                 self.user_info,

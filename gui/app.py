@@ -1790,41 +1790,41 @@ class Chart(QtWidgets.QWidget):
     def updateGenre(self, genre):
         self.genre_label.setText(genre)
         if genre == "All Genre":
-            self.no1 = db.database.books_ll.sort(2)[0]
-            self.no2 = db.database.books_ll.sort(2)[1]
-            self.no3 = db.database.books_ll.sort(2)[2]
+            self.no1 = db.database.books_ll.sort(4)[0]
+            self.no2 = db.database.books_ll.sort(4)[1]
+            self.no3 = db.database.books_ll.sort(4)[2]
         elif genre == "Fiction":
-            self.no1 = db.database.fictions_ll.sort(2)[0]
-            self.no2 = db.database.fictions_ll.sort(2)[1]
-            self.no3 = db.database.fictions_ll.sort(2)[2]
+            self.no1 = db.database.fictions_ll.sort(4)[0]
+            self.no2 = db.database.fictions_ll.sort(4)[1]
+            self.no3 = db.database.fictions_ll.sort(4)[2]
         elif genre == "Thriller":
-            self.no1 = db.database.thrillers_ll.sort(2)[0]
-            self.no2 = db.database.thrillers_ll.sort(2)[1]
-            self.no3 = db.database.thrillers_ll.sort(2)[2]
+            self.no1 = db.database.thrillers_ll.sort(4)[0]
+            self.no2 = db.database.thrillers_ll.sort(4)[1]
+            self.no3 = db.database.thrillers_ll.sort(4)[2]
         elif genre == "Fantasy":
-            self.no1 = db.database.fantasies_ll.sort(2)[0]
-            self.no2 = db.database.fantasies_ll.sort(2)[1]
-            self.no3 = db.database.fantasies_ll.sort(2)[2]
+            self.no1 = db.database.fantasies_ll.sort(4)[0]
+            self.no2 = db.database.fantasies_ll.sort(4)[1]
+            self.no3 = db.database.fantasies_ll.sort(4)[2]
         elif genre == "Romance":
-            self.no1 = db.database.romances_ll.sort(2)[0]
-            self.no2 = db.database.romances_ll.sort(2)[1]
-            self.no3 = db.database.romances_ll.sort(2)[2]
+            self.no1 = db.database.romances_ll.sort(4)[0]
+            self.no2 = db.database.romances_ll.sort(4)[1]
+            self.no3 = db.database.romances_ll.sort(4)[2]
         elif genre == "Biography":
-            self.no1 = db.database.biographies_ll.sort(2)[0]
-            self.no2 = db.database.biographies_ll.sort(2)[1]
-            self.no3 = db.database.biographies_ll.sort(2)[2]
+            self.no1 = db.database.biographies_ll.sort(4)[0]
+            self.no2 = db.database.biographies_ll.sort(4)[1]
+            self.no3 = db.database.biographies_ll.sort(4)[2]
         elif genre == "Comedy":
-            self.no1 = db.database.comedies_ll.sort(2)[0]
-            self.no2 = db.database.comedies_ll.sort(2)[1]
-            self.no3 = db.database.comedies_ll.sort(2)[2]
+            self.no1 = db.database.comedies_ll.sort(4)[0]
+            self.no2 = db.database.comedies_ll.sort(4)[1]
+            self.no3 = db.database.comedies_ll.sort(4)[2]
         elif genre == "Horror":
-            self.no1 = db.database.horrors_ll.sort(2)[0]
-            self.no2 = db.database.horrors_ll.sort(2)[1]
-            self.no3 = db.database.horrors_ll.sort(2)[2]
+            self.no1 = db.database.horrors_ll.sort(4)[0]
+            self.no2 = db.database.horrors_ll.sort(4)[1]
+            self.no3 = db.database.horrors_ll.sort(4)[2]
         elif genre == "Poetry":
-            self.no1 = db.database.poetries_ll.sort(2)[0]
-            self.no2 = db.database.poetries_ll.sort(2)[1]
-            self.no3 = db.database.poetries_ll.sort(2)[2]
+            self.no1 = db.database.poetries_ll.sort(4)[0]
+            self.no2 = db.database.poetries_ll.sort(4)[1]
+            self.no3 = db.database.poetries_ll.sort(4)[2]
         self.no1_btn.setIcon(QtGui.QIcon(self.no1[2]))
         self.no2_btn.setIcon(QtGui.QIcon(self.no2[2]))
         self.no3_btn.setIcon(QtGui.QIcon(self.no3[2]))
@@ -2964,6 +2964,8 @@ class Library(QtWidgets.QWidget):
         self.sort_box.addItem("")
         self.sort_box.addItem("")
         self.sort_box.addItem("")
+        self.sort_box.addItem("")
+        self.sort_box.addItem("")
         self.horizontalLayout_2.addWidget(self.sort_box)
         self.search_bar = QtWidgets.QLineEdit(self)
         self.search_bar.setMinimumSize(QtCore.QSize(250, 35))
@@ -3016,10 +3018,12 @@ class Library(QtWidgets.QWidget):
         self.genre_box.setItemText(6, _translate("Library", "Comedy"))
         self.genre_box.setItemText(7, _translate("Library", "Horror"))
         self.genre_box.setItemText(8, _translate("Library", "Poetry"))
-        self.sort_box.setItemText(0, _translate("Library", "a-z"))
-        self.sort_box.setItemText(1, _translate("Library", "z-a"))
-        self.sort_box.setItemText(2, _translate("Library", "Rating (most)"))
-        self.sort_box.setItemText(3, _translate("Library", "Rating (least)"))
+        self.sort_box.setItemText(0, _translate("Library", "A-Z (Title)"))
+        self.sort_box.setItemText(1, _translate("Library", "Z-A (Title)"))
+        self.sort_box.setItemText(2, _translate("Library", "A-Z (Author)"))
+        self.sort_box.setItemText(3, _translate("Library", "Z-A (Author)"))
+        self.sort_box.setItemText(4, _translate("Library", "Rating (most)"))
+        self.sort_box.setItemText(5, _translate("Library", "Rating (least)"))
         self.search_bar.setPlaceholderText(_translate("Library", "Search"))
 
     def goToBook(self, book_id, book_title):
@@ -3269,6 +3273,8 @@ class Request(QtWidgets.QWidget):
                 self.msg.setText("Book title and Author field is required.")
                 self.msg.exec_()
         else:
+            self.req_title.setText("")
+            self.req_author.setText("")
             self.msg.setWindowTitle("Existed book.")
             self.msg.setIcon(QtWidgets.QMessageBox.Warning)
             self.msg.setText("The Book is already existed.")
